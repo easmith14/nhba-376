@@ -75,6 +75,35 @@ def createArticle(building):
 	if len(urban_setting) > 0: 
 		createSection(building_name, token, 'Urban Setting', urban_setting)
 
+
+def insertToTable(table_name, object)
+	# open file
+	filename = 'nhba-db.sql'
+
+	sql = open(filename, 'a')
+	sql.write()
+	
+	# write insert statement
+	insert = 'INSERT INTO ' + table_name + ' ('
+	# for each column add the corresponding value for the current object
+	for key in object:
+	    insert += str(key) + ','
+	    
+	insert = insert[:-1]
+	insert += ') VALUES ('
+
+	for value in object.values():
+	    insert += '"' + str(value) + '"' + ','
+	    
+	insert = insert[:-1]
+	insert += ')'
+
+	sql.write(insert + '\n')
+
+	# close file
+	sql.close()
+
+	
 # These two lines are necessary to get the correct database from Mongo
 client = MongoClient()
 db = client.nhba
@@ -95,3 +124,4 @@ for i in range(len(table_list)):
 	# Create a new mediawiki entry using the post request below: 
 '''
 createArticle(building)
+insertToTable('Buildings', building)
