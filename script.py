@@ -110,7 +110,6 @@ def makeInfobox(page, token, building):
 def createArticle(building):
 	# Get an edit token so you can create / edit an article
 	r = requests.get('http://montaigu.cs.yale.edu/nhba/mediawiki/api.php?action=query&meta=tokens&format=json')
-	#print(r.text)
 	tmp = json.loads(r.text)
 	token = tmp['query']['tokens']['csrftoken']
 
@@ -153,14 +152,11 @@ def createArticle(building):
 	if len(urban_setting) > 0:
 		createSection(building_name, token, 'Urban Setting', urban_setting)
 
-
-
 def insertToTable(table_name, object):
 	# open file
 	filename = 'nhba-db.sql'
 
 	sql = open(filename, 'a')
-	#sql.write()
 
 	insert = 'INSERT INTO ' + table_name + ' ('
 	values = ') VALUES ('
@@ -171,28 +167,13 @@ def insertToTable(table_name, object):
 			string = str(object[key])
 			# re.sub(r'\\', )
 			# re.sub(r'\'', '\\\'', string)
-			values += "`" + re.sub(r'\'', '\\\'', str(object[key])) + "`" + ','
+			values += "'" + re.sub(r'\'', '\\\'', str(object[key])) + "'" + ','
 
 	insert = insert[:-1]
 
 	values = values[:-1]
 	values += ');'
 	final = insert + values
-
-	# # write insert statement
-	# insert = 'INSERT INTO ' + table_name + ' ('
-	# # for each column add the corresponding value for the current object
-	# for key in object:
-	#     insert += str(key) + ','
-	#
-	# insert = insert[:-1]
-	# insert += ') VALUES ('
-	#
-	# for value in object.values():
-	#     insert += "`" + str(value) + "`" + ','
-	#
-	# insert = insert[:-1]
-	# insert += ')'
 
 	sql.write(final + '\n')
 
@@ -231,7 +212,6 @@ pp = pprint.PrettyPrinter(indent=4)
 # insertToTable('Buildings', building)
 
 # pp.pprint(building)
-# for i in range(178, len(table_listo)-1):
 for i in range(len(table_list)):
 	# Create a new mediawiki entry using the post request below:
 	building = table_list[i]
